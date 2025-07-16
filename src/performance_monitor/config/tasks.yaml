@@ -1,0 +1,71 @@
+# src/performance_monitor/config/tasks.yaml
+crawl_website:
+  description: >
+    Crawl the website starting from the base URL: {url}.
+    Extract all unique internal links. The final output must be a Python list of strings,
+    where each string is a full URL.
+  expected_output: 'A Python list of all unique, internal URLs found on the website. Example: ["https://example.com/page1", "https://example.com/page2"]'
+
+analyze_performance:
+  description: >
+    For each URL in the provided list, analyze its performance and health.
+    Use the browser tool to check the page load time, look for critical console errors,
+    and verify that the link is not broken (i.e., does not return a 404 status).
+    Consolidate the findings for all URLs into a single analysis summary.
+  expected_output: >
+    A detailed markdown report summarizing the performance analysis for all URLs.
+    Include page load times, any console errors found, and a list of any broken links.
+
+audit_seo_and_accessibility:
+  description: >
+    For each URL in the list, conduct an audit of its on-page SEO and accessibility.
+    Check for the presence and content of the <title> tag, meta description, a single <h1> tag,
+    and alt text for all <img> tags.
+    Compile the results into a comprehensive summary.
+  expected_output: >
+    A detailed markdown report summarizing the SEO and accessibility audit for all URLs.
+    For each URL, list the findings for title, meta description, H1 tag, and missing alt texts.
+
+compile_final_report:
+  description: >
+    Review and synthesize the information from the Performance Analysis and the SEO & Accessibility Audit.
+    Combine all the findings into a single, cohesive, and easy-to-read final report in markdown format.
+    The report must start with a title "Portal Pulse Final Report".
+    It should include:
+    1. An overall summary of the findings.
+    2. A "Performance" section with data from the analysis.
+    3. An "SEO & Accessibility" section with data from the audit.
+    4. A final "Actionable Recommendations" section with a bulleted list of the most critical issues to fix.
+  expected_output: >
+    A complete and well-structured markdown file that contains the full analysis and recommendations.
+
+compile_final_report:
+  description: >
+    Review and synthesize the information from the Performance Analysis and the SEO & Accessibility Audit.
+    Combine all findings into a single, cohesive JSON object.
+    The final output MUST be a single, valid JSON object and nothing else.
+    It should follow this structure:
+    {
+      "summary": "A one-sentence overall summary of the findings.",
+      "kpis": {
+        "pages_scanned": "Total number of pages analyzed.",
+        "avg_load_time": "Average page load time in milliseconds.",
+        "broken_links": "Total number of pages with a 4xx or 5xx status.",
+        "seo_issues": "Total number of pages with missing titles or descriptions.",
+        "accessibility_errors": "Total count of images missing alt text."
+      },
+      "recommendations": [
+        "A list of the top 3-5 most critical, actionable recommendations as strings."
+      ],
+      "performance_details": [
+        {"url": "The URL of the page", "load_time_ms": "Page load time in ms", "status_code": "The HTTP status code"}
+      ],
+      "seo_details": [
+        {"url": "The URL of the page", "title_found": "boolean", "description_found": "boolean", "h1_count": "integer"}
+      ],
+      "accessibility_details": [
+        {"url": "The URL of the page", "missing_alt_tags": "Count of images missing alt text on this page"}
+      ]
+    }
+  expected_output: >
+    A single, valid JSON object containing the full, structured analysis and recommendations.
